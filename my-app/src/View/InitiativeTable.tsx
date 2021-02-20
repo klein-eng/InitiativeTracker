@@ -4,6 +4,7 @@ import InitiativeObject from './InitiativeObject'
 import InitiativeObjectModel from '../Model/InitiativeObjectModel'
 import CombatParticipantModel from '../Model/CombatParticipantModel'
 import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel'
+import PlayerCharacterModel from '../Model/PlayerCharacterModel';
 
 function InitiativeTable(props: any) {
 	return (
@@ -17,9 +18,8 @@ function InitiativeTable(props: any) {
 	);
 }
 
-function Rogue (): CombatParticipantGroupModel {
-	var rogue = new CombatParticipantModel(17,36,21)
-	return new CombatParticipantGroupModel(26,"Rogue","Hidden",rogue);
+function Rogue (): PlayerCharacterModel {
+	return new PlayerCharacterModel(26,"Rogue",21, 36, 17, "Hidden");
 };
 
 function Dragon (): CombatParticipantGroupModel {

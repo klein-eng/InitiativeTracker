@@ -10,6 +10,9 @@ function InitiativeObject(props: any) {
 	if (props.ObjectData instanceof CombatParticipantGroupModel) {
 		participants = buildParticipantGroup(props.ObjectData.Group);
 	}
+	else {
+		participants.push(<ContentRow AC={props.ObjectData.AC} MaxHP={props.ObjectData.MaxHP} CurHP={props.ObjectData.CurHP} />)
+	}
 	
 	return (
 		<div className="container-fluid initObject">
@@ -36,6 +39,10 @@ function InitiativeObject(props: any) {
 }
 
 function getHpPercentage(ObjectData: any): number {
+	console.log(ObjectData);
+
+	//groups of combatants are handled differently
+	//HP bar shows how many creatures are left
 	if (ObjectData instanceof CombatParticipantGroupModel) {
 		var curHp
 		var maxHp
@@ -49,7 +56,11 @@ function getHpPercentage(ObjectData: any): number {
 		}
 		return Math.round((curHp/maxHp)*100);
 	}
-	return -1;
+
+	//There's only one participant left
+	else {
+		return Math.round((ObjectData.CurHP/ObjectData.MaxHP)*100);
+	}
 }
 
 function buildParticipantGroup(group: CombatParticipantModel[]): any {
