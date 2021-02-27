@@ -5,38 +5,43 @@ import InitiativeObjectModel from '../Model/InitiativeObjectModel'
 import CombatParticipantModel from '../Model/CombatParticipantModel'
 import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel'
 import PlayerCharacterModel from '../Model/PlayerCharacterModel';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
-function InitiativeTable(props: any) {
-	return (
-	<div>
-		<RoundCount Count={3}/>
-		<InitiativeObject ObjectData={Rogue()}/>
-		<InitiativeObject ObjectData={Lair()}/>
-		<InitiativeObject ObjectData={Dragon()}/>
-		<InitiativeObject ObjectData={Kobolds()}/>
-	</div>
-	);
+interface InitiativeTableProps {
+	Participants: InitiativeObjectModel[];
 }
 
-function Rogue (): PlayerCharacterModel {
-	return new PlayerCharacterModel(26,"Rogue",21, 36, 17, "Hidden");
-};
+interface InitiativeTableState {
+	Participants: InitiativeObjectModel[];
+}
 
-function Dragon (): CombatParticipantGroupModel {
-	var dragon = new CombatParticipantModel(22,167,124);
-	return new CombatParticipantGroupModel(17,"Dragon","Breath Weapon Charged",dragon);
-};
+class InitiativeTable extends React.Component<InitiativeTableProps,InitiativeTableState> {
+	constructor(props: any) {
+		super(props);
+		this.state = {Participants: props.Participants};
+	}
 
-function Lair (): InitiativeObjectModel {
-	var lair = new InitiativeObjectModel(20,"Lair Action");
-	return lair;
-};
+	render() {
+		return (
+			<div>
+				<RoundCount Count={3}/>
+				<div>
+					<InitiativeObjectList Objects={this.state.Participants}/>
+				</div>
+			</div>
+		);
+	}
+}
 
-function Kobolds (): CombatParticipantGroupModel {
-	var kobold = new CombatParticipantModel(12,6,6);
-	var kobold2 = new CombatParticipantModel(12,6,6);
-	var kobold3 = new CombatParticipantModel(12,6,0);
-	return new CombatParticipantGroupModel(17,"Kobold","",kobold,kobold2,kobold3);
-};
+function InitiativeObjectList(props: any) {
+	props.Objects.sort((left: InitiativeObjectModel, right:InitiativeObjectModel) => {
+		if (left.Initiative > right.Initiative) return -1;
+		else if (left.Initiative < right.Initiative) return 1;
+		return 0;
+	});
+	return props.Objects.map((initiativeObject: InitiativeObjectModel) => 
+		<InitiativeObject ObjectData={initiativeObject}></InitiativeObject>
+	);
+}
 
 export default InitiativeTable;

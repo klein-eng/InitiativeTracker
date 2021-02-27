@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import InitiativeTableController from './Controller/InitiativeTableController';
 import InitiativeTable from './View/InitiativeTable'
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
           Initiative Tracker
         </p>
       </header>
-	  <InitiativeTable/>
+	  <InitiativeTableController/>
     </div>
   );
 }
