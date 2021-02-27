@@ -1,15 +1,31 @@
-import { render } from '@testing-library/react';
 import React from 'react';
 import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel';
 import CombatParticipantModel from '../Model/CombatParticipantModel';
 import InitiativeObjectModel from '../Model/InitiativeObjectModel';
 import PlayerCharacterModel from '../Model/PlayerCharacterModel';
-import InitiativeObject from '../View/InitiativeObject';
 import InitiativeTable from '../View/InitiativeTable';
 
 class InitiativeTableController extends React.Component{
+    Participants: InitiativeObjectModel[] = [];
+    
+    constructor(props: any) {
+        super(props);
+        this.Participants = Participants();
+    }
+
     render() {
-        return(<InitiativeTable Participants={Participants()}></InitiativeTable>);
+        return(
+        <div>
+            <button onClick={() => this.testFn()}>Pop</button>
+            <InitiativeTable Participants={this.Participants}></InitiativeTable>
+        </div>
+        );
+    }
+
+    testFn() {
+        this.Participants.pop();
+        console.log(this.Participants);
+        this.setState({})
     }
 }
 

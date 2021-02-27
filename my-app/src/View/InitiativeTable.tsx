@@ -2,10 +2,6 @@ import React from 'react';
 import RoundCount from './RoundCount'
 import InitiativeObject from './InitiativeObject'
 import InitiativeObjectModel from '../Model/InitiativeObjectModel'
-import CombatParticipantModel from '../Model/CombatParticipantModel'
-import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel'
-import PlayerCharacterModel from '../Model/PlayerCharacterModel';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 interface InitiativeTableProps {
 	Participants: InitiativeObjectModel[];
@@ -40,7 +36,7 @@ function InitiativeObjectList(props: any) {
 		return 0;
 	});
 	return props.Objects.map((initiativeObject: InitiativeObjectModel) => 
-		<InitiativeObject ObjectData={initiativeObject}></InitiativeObject>
+		<InitiativeObject key={initiativeObject.Name} ObjectData={initiativeObject}></InitiativeObject>
 	);
 }
 
