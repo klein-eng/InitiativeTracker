@@ -4,64 +4,54 @@ import ContentRow from './ContentRow'
 import CombatParticipantModel from '../Model/CombatParticipantModel'
 import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel'
 
-function InitiativeObject(props: any) {
-	
-	var participants = [];
-	if (props.ObjectData instanceof CombatParticipantGroupModel) {
-		participants = buildParticipantGroup(props.ObjectData.Group);
-	}
-	else {
-		participants.push(<ContentRow AC={props.ObjectData.AC} MaxHP={props.ObjectData.MaxHP} CurHP={props.ObjectData.CurHP} />)
-	}
-	
-	return (
-		<div className="container-fluid initObject">
-			<HpBar percentage={getHpPercentage(props.ObjectData)}/>
-			<div className="row">
-				<div className="col-sm-6">
-					<div className="row">
-						<div className="col-2 init-count">{props.ObjectData.Initiative}</div>
-						<div className="col-10">{props.ObjectData.Name}</div>
-					</div>
-				</div>
-				<div className="col-sm-6">
-					{participants}
-				</div>
-			</div>
-			{props.ObjectData.Note &&
-			<input 
-				className="notesField" 
-				defaultValue={props.ObjectData.Note} 
-			/>
-			}
-		</div>
-	);
+interface InitiativeObjectProps {
+	ObjectData: any
 }
 
-function getHpPercentage(ObjectData: any): number {
-	console.log(ObjectData);
+interface InitiativeObjectState {
+	ObjectData: any
+}
 
-	//groups of combatants are handled differently
-	//HP bar shows how many creatures are left
-	if (ObjectData instanceof CombatParticipantGroupModel) {
-		var curHp
-		var maxHp
-		if (ObjectData.Group.length === 1) {
-			curHp = ObjectData.Group[0].CurHP;
-			maxHp = ObjectData.Group[0].MaxHP;
+class InitiativeObject extends React.Component<InitiativeObjectProps, InitiativeObjectState> {
+	constructor(props: any) {
+		super(props);
+		this.state = {ObjectData: props.ObjectData};
+	}
+	
+	render() {
+		var participants = [];
+		if (this.state.ObjectData instanceof CombatParticipantGroupModel) {
+			participants = buildParticipantGroup(this.state.ObjectData.Group);
 		}
 		else {
-			curHp = ObjectData.ActiveCombatants();
-			maxHp = ObjectData.Group.length;
+			participants.push(<ContentRow key={1} AC={this.state.ObjectData.AC} MaxHP={this.state.ObjectData.MaxHP} CurHP={this.state.ObjectData.CurHP} />)
 		}
-		return Math.round((curHp/maxHp)*100);
-	}
-
-	//There's only one participant left
-	else {
-		return Math.round((ObjectData.CurHP/ObjectData.MaxHP)*100);
+		
+		return (
+			<div className="container-fluid initObject">
+				<HpBar participant={this.state.ObjectData}/>
+				<div className="row">
+					<div className="col-sm-6">
+						<div className="row">
+							<div className="col-2 init-count">{this.state.ObjectData.Initiative}</div>
+							<div className="col-10">{this.state.ObjectData.Name}</div>
+						</div>
+					</div>
+					<div className="col-sm-6">
+						{participants}
+					</div>
+				</div>
+				{this.state.ObjectData.Note &&
+				<input 
+					className="notesField" 
+					defaultValue={this.state.ObjectData.Note} 
+				/>
+				}
+			</div>
+		);
 	}
 }
+
 
 function buildParticipantGroup(group: CombatParticipantModel[]): any {
 	var participants = [];

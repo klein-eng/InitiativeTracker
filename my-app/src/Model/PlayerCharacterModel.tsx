@@ -11,7 +11,6 @@ class PlayerCharacterModel extends InitiativeObjectModel implements CombatPartic
         this.AC = AC;
 		this.MaxHP = maxHP;
 		this.CurHP = curHP;
-		
 		return this;
 	};
 	
