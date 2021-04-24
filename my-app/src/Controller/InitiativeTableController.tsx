@@ -16,19 +16,28 @@ class InitiativeTableController extends React.Component{
     render() {
         return(
         <div>
-            <button onClick={() => this.testFn()}>Pop</button>
-            <InitiativeTable Participants={this.Participants}></InitiativeTable>
+            <button onClick={() => this.AddObject()}>Update</button>
+            <InitiativeTable 
+                Participants={this.Participants}
+                AddObject={this.AddObject}
+                DeleteObject={this.DeleteObject}>
+            </InitiativeTable>
         </div>
         );
     }
 
-    testFn() {
-        this.Participants.pop();
-        console.log(this.Participants);
-        this.setState({})
+    AddObject() {
+        this.setState({});
+        return;
+    }
+
+    DeleteObject() {
+        this.setState({});
+        return;
     }
 }
 
+//#region Test data
 function Participants(): InitiativeObjectModel[] {
     return [Rogue(), Dragon(), Lair(), Kobolds()];
 }
@@ -53,5 +62,6 @@ function Kobolds (): CombatParticipantGroupModel {
 	var kobold3 = new CombatParticipantModel(12,6,0);
 	return new CombatParticipantGroupModel(17,"Kobold","",kobold,kobold2,kobold3);
 };
+//#endregion
 
 export default InitiativeTableController;

@@ -9,6 +9,10 @@ class InitiativeObjectModel {
 		this.Note = note;
 		return this;
 	}
+
+	getKey(){
+		return this.Name + this.Initiative;
+	}
 }
 
 export default InitiativeObjectModel;

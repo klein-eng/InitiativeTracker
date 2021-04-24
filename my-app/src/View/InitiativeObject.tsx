@@ -3,19 +3,26 @@ import HpBar from './HpBar';
 import ContentRow from './ContentRow'
 import CombatParticipantModel from '../Model/CombatParticipantModel'
 import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel'
+import InitiativeObjectModel from '../Model/InitiativeObjectModel';
 
 interface InitiativeObjectProps {
-	ObjectData: any
+	ObjectData: InitiativeObjectModel
+	Reorder: Function
 }
 
 interface InitiativeObjectState {
 	ObjectData: any
+	Initiative: number
 }
 
 class InitiativeObject extends React.Component<InitiativeObjectProps, InitiativeObjectState> {
 	constructor(props: any) {
 		super(props);
-		this.state = {ObjectData: props.ObjectData};
+		this.state = {ObjectData: props.ObjectData, Initiative: props.ObjectData.Initiative};
+
+		this.OnInitChanged = this.OnInitChanged.bind(this);
+		this.OnInitBlur = this.OnInitBlur.bind(this);
+		this.OnInitKeyUp = this.OnInitKeyUp.bind(this);
 	}
 	
 	render() {
@@ -28,12 +35,20 @@ class InitiativeObject extends React.Component<InitiativeObjectProps, Initiative
 		}
 		
 		return (
-			<div className="container-fluid initObject">
+			<div className="container-fluid initObject" id={this.state.ObjectData.getKey()}>
 				<HpBar participant={this.state.ObjectData}/>
 				<div className="row">
 					<div className="col-sm-6">
 						<div className="row">
-							<div className="col-2 init-count">{this.state.ObjectData.Initiative}</div>
+							<div className="col-2 initCount">
+								<input className="writeField"
+									onChange={this.OnInitChanged}
+									onBlur={this.OnInitBlur}
+									onKeyUp={this.OnInitKeyUp}
+									type="text" 
+									value={this.props.ObjectData.Initiative}
+								/>
+							</div>
 							<div className="col-10">{this.state.ObjectData.Name}</div>
 						</div>
 					</div>
@@ -50,8 +65,24 @@ class InitiativeObject extends React.Component<InitiativeObjectProps, Initiative
 			</div>
 		);
 	}
-}
 
+	OnInitChanged(e: any): void {
+		e.preventDefault();
+		var object = this.state.ObjectData;
+		object.Initiative = e.target.value;
+		this.setState({ObjectData: object})
+	}
+
+	OnInitBlur(): void {
+		this.props.Reorder();
+	}
+
+	OnInitKeyUp(e: any): void {
+		if(e.key === "Enter") {
+			this.props.Reorder();
+		}
+	}
+}
 
 function buildParticipantGroup(group: CombatParticipantModel[]): any {
 	var participants = [];
