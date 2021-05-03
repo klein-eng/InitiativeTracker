@@ -1,5 +1,4 @@
 import React from 'react';
-import RoundCount from './RoundCount'
 import InitiativeObjectList from './InitiativeObjectList'
 import InitiativeObjectModel from '../Model/InitiativeObjectModel'
 
@@ -22,7 +21,6 @@ class InitiativeTable extends React.Component<InitiativeTableProps,InitiativeTab
 	render() {
 		return (
 			<div>
-				<RoundCount Count={3}/>
 				<div>
 					<InitiativeObjectList 
 						Participants={this.state.Participants}

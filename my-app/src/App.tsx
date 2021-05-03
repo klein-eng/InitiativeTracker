@@ -9,14 +9,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Initiative Tracker
-          </p>
-        </header>
       <InitiativeTableController/>
-      </div>
     );
   }
 }

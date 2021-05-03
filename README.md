@@ -1,2 +1,2 @@
 # InitiativeTracker
-This is a quick program to become better versed in React.js. It is a web-based application to track combat initiative for RPGs.
+This is a quick React.js program for my own personal use. It is a utility used to track initiative for TTRPGs.

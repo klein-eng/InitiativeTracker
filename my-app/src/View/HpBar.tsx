@@ -6,8 +6,10 @@ function HpBar(props: any) {
 	if (percentage >= 0) {
 		return (
 			<div className="row">
-				<div className="col-12 HpBarMax">
-					<Filler percentage={percentage} />
+				<div className="col-12 HpBarContainer">
+					<div className="HpBarMax">
+						<Filler percentage={percentage} />
+					</div>
 				</div>
 			</div>
 		);

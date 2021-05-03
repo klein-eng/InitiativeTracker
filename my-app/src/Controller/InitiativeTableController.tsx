@@ -4,24 +4,46 @@ import CombatParticipantModel from '../Model/CombatParticipantModel';
 import InitiativeObjectModel from '../Model/InitiativeObjectModel';
 import PlayerCharacterModel from '../Model/PlayerCharacterModel';
 import InitiativeTable from '../View/InitiativeTable';
+import RoundCount from '../View/RoundCount';
 
-class InitiativeTableController extends React.Component{
+interface ControllerProps{}
+interface ControllerState
+{
+    RoundCount: number;
+}
+
+class InitiativeTableController extends React.Component<ControllerProps, ControllerState>{
     Participants: InitiativeObjectModel[] = [];
+    RoundCount: number;
     
     constructor(props: any) {
         super(props);
         this.Participants = Participants();
+        this.RoundCount = 1
+        this.state = {RoundCount: this.RoundCount}
     }
 
     render() {
         return(
-        <div>
-            <button onClick={() => this.AddObject()}>Update</button>
-            <InitiativeTable 
-                Participants={this.Participants}
-                AddObject={this.AddObject}
-                DeleteObject={this.DeleteObject}>
-            </InitiativeTable>
+        <div className="fullHeight">
+            <header id="header">
+                <div id="headerContent" className="centered">
+                    <RoundCount Count={this.state.RoundCount}/>
+                    <div>
+                        <button onClick={() => this.NextTurn()}>Next</button>
+                        <button onClick={() => this.AddObject()}>Add</button>
+                    </div>
+                </div>
+            </header>
+            <div id="bodyContent">    
+                <div>
+                    <InitiativeTable 
+                        Participants={this.Participants}
+                        AddObject={this.AddObject}
+                        DeleteObject={this.DeleteObject}>
+                    </InitiativeTable>
+                </div>
+            </div>
         </div>
         );
     }
@@ -33,6 +55,12 @@ class InitiativeTableController extends React.Component{
 
     DeleteObject() {
         this.setState({});
+        return;
+    }
+
+    NextTurn() {
+        this.RoundCount++; //TODO: Advance through participants list and only increment turn counter when needed
+        this.setState({RoundCount: this.RoundCount});
         return;
     }
 }
