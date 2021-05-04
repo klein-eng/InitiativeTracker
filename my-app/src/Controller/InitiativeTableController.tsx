@@ -18,7 +18,7 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
     
     constructor(props: any) {
         super(props);
-        var tracker = new InitiativeTrackerModel
+        var tracker = new InitiativeTrackerModel();
         tracker.SetParticipantsList(Participants());
         this.state = {InitiativeTracker: tracker};
         this.ActiveObjectIndex = 1;
