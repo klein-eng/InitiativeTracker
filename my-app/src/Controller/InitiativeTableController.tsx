@@ -2,6 +2,7 @@ import React from 'react';
 import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel';
 import CombatParticipantModel from '../Model/CombatParticipantModel';
 import InitiativeObjectModel from '../Model/InitiativeObjectModel';
+import InitiativeTrackerModel from '../Model/InitiativeTrackerModel';
 import PlayerCharacterModel from '../Model/PlayerCharacterModel';
 import InitiativeTable from '../View/InitiativeTable';
 import RoundCount from '../View/RoundCount';
@@ -9,18 +10,18 @@ import RoundCount from '../View/RoundCount';
 interface ControllerProps{}
 interface ControllerState
 {
-    RoundCount: number;
+    InitiativeTracker: InitiativeTrackerModel;
 }
 
 class InitiativeTableController extends React.Component<ControllerProps, ControllerState>{
-    Participants: InitiativeObjectModel[] = [];
-    RoundCount: number;
+    ActiveObjectIndex: number;
     
     constructor(props: any) {
         super(props);
-        this.Participants = Participants();
-        this.RoundCount = 1
-        this.state = {RoundCount: this.RoundCount}
+        var tracker = new InitiativeTrackerModel
+        tracker.SetParticipantsList(Participants());
+        this.state = {InitiativeTracker: tracker};
+        this.ActiveObjectIndex = 1;
     }
 
     render() {
@@ -28,19 +29,20 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
         <div className="fullHeight">
             <header id="header">
                 <div id="headerContent" className="centered">
-                    <RoundCount Count={this.state.RoundCount}/>
+                    <RoundCount Count={this.state.InitiativeTracker.RoundCount}/>
                     <div>
                         <button onClick={() => this.NextTurn()}>Next</button>
                         <button onClick={() => this.AddObject()}>Add</button>
+                        <button onClick={() => this.DeleteObject()}>Delete</button>
                     </div>
                 </div>
             </header>
             <div id="bodyContent">    
                 <div>
                     <InitiativeTable 
-                        Participants={this.Participants}
-                        AddObject={this.AddObject}
-                        DeleteObject={this.DeleteObject}>
+                        InitiativeTracker = {this.state.InitiativeTracker}
+                        AddObject = {this.AddObject}
+                        DeleteObject = {this.DeleteObject}>
                     </InitiativeTable>
                 </div>
             </div>
@@ -54,13 +56,14 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
     }
 
     DeleteObject() {
+        this.state.InitiativeTracker.DeleteParticipant(0);
         this.setState({});
         return;
     }
 
     NextTurn() {
-        this.RoundCount++; //TODO: Advance through participants list and only increment turn counter when needed
-        this.setState({RoundCount: this.RoundCount});
+        this.state.InitiativeTracker.NextTurn(); //TODO: Advance through participants list and only increment turn counter when needed
+        this.setState({});
         return;
     }
 }

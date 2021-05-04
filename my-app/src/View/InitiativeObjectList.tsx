@@ -1,40 +1,33 @@
 import React from 'react';
 import InitiativeObjectModel from '../Model/InitiativeObjectModel'
+import InitiativeTrackerModel from '../Model/InitiativeTrackerModel';
 import InitiativeObject from './InitiativeObject'
 
 interface InitiativeObjectListProps {
-	Participants: InitiativeObjectModel[]
+	InitiativeTracker: InitiativeTrackerModel;
 }
 
-interface InitiativeObjectListState {
-	Participants: InitiativeObjectModel[];
-}
-
-class InitiativeObjectList extends React.Component<InitiativeObjectListProps,InitiativeObjectListState> {
+class InitiativeObjectList extends React.Component<InitiativeObjectListProps> {
 	constructor(props: any) {
 		super(props);
-		this.state = {Participants: props.Participants};
+		//this.state = {Participants: props.Participants};
 
 		this.Reorder = this.Reorder.bind(this);
 	}
 	
 	render(){
-		this.state.Participants.sort((left: InitiativeObjectModel, right:InitiativeObjectModel) => {
-			if (left.Initiative > right.Initiative) return -1;
-			else if (left.Initiative < right.Initiative) return 1;
-			return 0;
-		});
-		return this.state.Participants.map((initiativeObject: InitiativeObjectModel) => 
+		return this.props.InitiativeTracker.GetParticipants().map((initiativeObject: InitiativeObjectModel, index: number) => 
 			<InitiativeObject 
-				key={initiativeObject.getKey()} 
-				ObjectData={initiativeObject}
-				Reorder={this.Reorder}
-			>
-			</InitiativeObject>
+				key = {initiativeObject.getKey()} 
+				ObjectData = {initiativeObject}
+				Reorder = {this.Reorder}
+				IsActive = {index == this.props.InitiativeTracker.ActiveObjectIndex}
+			/>
 		);
 	}
 
 	Reorder() {
+		this.props.InitiativeTracker.SortParticipantList()
 		this.setState({});
 	}
 }

@@ -6,13 +6,14 @@ import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel'
 import InitiativeObjectModel from '../Model/InitiativeObjectModel';
 
 interface InitiativeObjectProps {
-	ObjectData: InitiativeObjectModel
-	Reorder: Function
+	ObjectData: InitiativeObjectModel;
+	Reorder: Function;
+	IsActive: boolean;
 }
 
 interface InitiativeObjectState {
-	ObjectData: any
-	Initiative: number
+	ObjectData: any;
+	Initiative: number;
 }
 
 class InitiativeObject extends React.Component<InitiativeObjectProps, InitiativeObjectState> {
@@ -33,10 +34,14 @@ class InitiativeObject extends React.Component<InitiativeObjectProps, Initiative
 		else {
 			participants.push(<ContentRow key={1} AC={this.state.ObjectData.AC} MaxHP={this.state.ObjectData.MaxHP} CurHP={this.state.ObjectData.CurHP} />)
 		}
+		var classes: string[] = ["container-fluid", "initObject"]
+		if (this.props.IsActive) {
+			classes.push("activeObject")
+		}
 		
 		return (
-			<div className="container-fluid initObject" id={this.state.ObjectData.getKey()}>
-				<HpBar participant={this.state.ObjectData}/>
+			<div className={classes.join(" ")} id={this.props.ObjectData.getKey()}>
+				<HpBar participant={this.props.ObjectData}/>
 				<div className="row">
 					<div className="col-sm-6">
 						<div className="row">
@@ -49,7 +54,7 @@ class InitiativeObject extends React.Component<InitiativeObjectProps, Initiative
 									value={this.props.ObjectData.Initiative}
 								/>
 							</div>
-							<div className="col-10">{this.state.ObjectData.Name}</div>
+							<div className="col-10">{this.props.ObjectData.Name}</div>
 						</div>
 					</div>
 					<div className="col-sm-6">
