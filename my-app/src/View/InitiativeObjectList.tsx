@@ -30,6 +30,11 @@ class InitiativeObjectList extends React.Component<InitiativeObjectListProps> {
 		this.props.InitiativeTracker.SortParticipantList()
 		this.setState({});
 	}
+
+	DeleteObjects() {
+		this.props.InitiativeTracker.DeleteSelectedParticipants();
+		this.setState({});
+	}
 }
 
 export default InitiativeObjectList;

@@ -45,6 +45,12 @@ input {
     margin: auto;
 }
 
+@media only screen and (max-width: 600px) {
+    #bodyContent {
+        padding: .5rem .5rem;
+    }
+}
+
 .contentRow {
     margin-bottom: .25rem;
 }
@@ -75,6 +81,7 @@ input {
     border-bottom: white solid .2rem;
     border-right: white solid .2rem;
     border-bottom-right-radius: 1rem;
+    margin-bottom: .25rem;
 }
 
 .initCount:hover {
@@ -92,6 +99,10 @@ input {
 
 .activeObject {
     border: red solid .2rem;
+}
+
+.objectSelect {
+    margin: auto .5rem auto auto;
 }
 
 .notesField {
@@ -115,4 +126,8 @@ input {
 
 .fullHeight {
     height: 100%;
+}
+
+.flexContainer {
+    display: flex
 }

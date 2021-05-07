@@ -41,8 +41,13 @@ class InitiativeTrackerModel {
 		});
         this.Participants = list;
     }
-    DeleteParticipant(index: number) {
-        this.Participants.pop();
+
+    DeleteSelectedParticipants() {
+        for (let index: number = this.Participants.length - 1; index >= 0; index--){
+            if(this.Participants[index].IsSelected === true) {
+                this.Participants.splice(index, 1);
+            }
+        }
     }
 }
 

@@ -4,7 +4,7 @@ import CombatParticipantModel from '../Model/CombatParticipantModel';
 import InitiativeObjectModel from '../Model/InitiativeObjectModel';
 import InitiativeTrackerModel from '../Model/InitiativeTrackerModel';
 import PlayerCharacterModel from '../Model/PlayerCharacterModel';
-import InitiativeTable from '../View/InitiativeTable';
+import InitiativeObjectList from '../View/InitiativeObjectList';
 import RoundCount from '../View/RoundCount';
 
 interface ControllerProps{}
@@ -39,11 +39,9 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
             </header>
             <div id="bodyContent">    
                 <div>
-                    <InitiativeTable 
+                    <InitiativeObjectList 
                         InitiativeTracker = {this.state.InitiativeTracker}
-                        AddObject = {this.AddObject}
-                        DeleteObject = {this.DeleteObject}>
-                    </InitiativeTable>
+                    />
                 </div>
             </div>
         </div>
@@ -56,7 +54,7 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
     }
 
     DeleteObject() {
-        this.state.InitiativeTracker.DeleteParticipant(0);
+        this.state.InitiativeTracker.DeleteSelectedParticipants();
         this.setState({});
         return;
     }

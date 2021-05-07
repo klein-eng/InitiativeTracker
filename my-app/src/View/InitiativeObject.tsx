@@ -24,6 +24,7 @@ class InitiativeObject extends React.Component<InitiativeObjectProps, Initiative
 		this.OnInitChanged = this.OnInitChanged.bind(this);
 		this.OnInitBlur = this.OnInitBlur.bind(this);
 		this.OnInitKeyUp = this.OnInitKeyUp.bind(this);
+		this.ToggleSelection = this.ToggleSelection.bind(this);
 	}
 	
 	render() {
@@ -40,33 +41,41 @@ class InitiativeObject extends React.Component<InitiativeObjectProps, Initiative
 		}
 		
 		return (
-			<div className={classes.join(" ")} id={this.props.ObjectData.getKey()}>
-				<HpBar participant={this.props.ObjectData}/>
-				<div className="row">
-					<div className="col-sm-6">
-						<div className="row">
-							<div className="col-2 initCount">
-								<input className="writeField"
-									onChange={this.OnInitChanged}
-									onBlur={this.OnInitBlur}
-									onKeyUp={this.OnInitKeyUp}
-									type="text" 
-									value={this.props.ObjectData.Initiative}
-								/>
+			<div className="flexContainer"> 
+				<input 
+					type="checkbox" 
+					className="objectSelect" 
+					checked={this.props.ObjectData.IsSelected}
+					onChange={this.ToggleSelection}
+				/>
+				<div className={classes.join(" ")} id={this.props.ObjectData.getKey()}>
+					<HpBar participant={this.props.ObjectData}/>
+					<div className="row">
+						<div className="col-sm-6">
+							<div className="row">
+								<div className="col-2 initCount">
+									<input className="writeField"
+										onChange={this.OnInitChanged}
+										onBlur={this.OnInitBlur}
+										onKeyUp={this.OnInitKeyUp}
+										type="text" 
+										value={this.props.ObjectData.Initiative}
+									/>
+								</div>
+								<div className="col-10">{this.props.ObjectData.Name}</div>
 							</div>
-							<div className="col-10">{this.props.ObjectData.Name}</div>
+						</div>
+						<div className="col-sm-6">
+							{participants}
 						</div>
 					</div>
-					<div className="col-sm-6">
-						{participants}
-					</div>
+					{this.state.ObjectData.Note &&
+					<input 
+						className="notesField" 
+						defaultValue={this.state.ObjectData.Note} 
+					/>
+					}
 				</div>
-				{this.state.ObjectData.Note &&
-				<input 
-					className="notesField" 
-					defaultValue={this.state.ObjectData.Note} 
-				/>
-				}
 			</div>
 		);
 	}
@@ -77,15 +86,18 @@ class InitiativeObject extends React.Component<InitiativeObjectProps, Initiative
 		object.Initiative = e.target.value;
 		this.setState({ObjectData: object})
 	}
-
 	OnInitBlur(): void {
 		this.props.Reorder();
 	}
-
 	OnInitKeyUp(e: any): void {
 		if(e.key === "Enter") {
 			this.props.Reorder();
 		}
+	}
+
+	ToggleSelection(e: any) {
+		this.props.ObjectData.ToggleSelection();
+		this.setState({})
 	}
 }
 
