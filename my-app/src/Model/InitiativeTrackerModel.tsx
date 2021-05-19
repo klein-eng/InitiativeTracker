@@ -1,5 +1,5 @@
 import InitiativeObjectModel from "./InitiativeObjectModel";
-
+import CombatParticipantModel from "./InitiativeObjectModel";
 
 class InitiativeTrackerModel {
     RoundCount: number;
@@ -46,6 +46,16 @@ class InitiativeTrackerModel {
         for (let index: number = this.Participants.length - 1; index >= 0; index--){
             if(this.Participants[index].IsSelected === true) {
                 this.Participants.splice(index, 1);
+            }
+        }
+    }
+
+    ApplyDamage(damageAmount: number) {
+        for (let index: number = this.Participants.length - 1; index >= 0; index--){
+            let participant: InitiativeObjectModel = this.Participants[index];
+            if(participant.IsSelected === true) {
+                participant.ApplyDamage(damageAmount);
+                participant.IsSelected = false;
             }
         }
     }

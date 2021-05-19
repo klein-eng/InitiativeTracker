@@ -1,4 +1,4 @@
-class InitiativeObjectModel {
+abstract class InitiativeObjectModel {
 	Initiative: number;
 	Name: string;
 	Note: string;
@@ -23,6 +23,7 @@ class InitiativeObjectModel {
 			this.IsSelected = true;
 		} 
 	}
+	abstract ApplyDamage(damageAmount: number): void
 }
 
 export default InitiativeObjectModel;

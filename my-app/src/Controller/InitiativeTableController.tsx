@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import CombatParticipantGroupModel from '../Model/CombatParticipantGroupModel';
 import CombatParticipantModel from '../Model/CombatParticipantModel';
 import InitiativeObjectModel from '../Model/InitiativeObjectModel';
 import InitiativeTrackerModel from '../Model/InitiativeTrackerModel';
+import NonParticipantModel from '../Model/NonParticipantModel';
 import PlayerCharacterModel from '../Model/PlayerCharacterModel';
 import InitiativeObjectList from '../View/InitiativeObjectList';
 import RoundCount from '../View/RoundCount';
@@ -15,6 +16,7 @@ interface ControllerState
 
 class InitiativeTableController extends React.Component<ControllerProps, ControllerState>{
     ActiveObjectIndex: number;
+    DamageAmount: number = 0;
     
     constructor(props: any) {
         super(props);
@@ -22,6 +24,8 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
         tracker.SetParticipantsList(Participants());
         this.state = {InitiativeTracker: tracker};
         this.ActiveObjectIndex = 1;
+        this.ApplyDamage = this.ApplyDamage.bind(this);
+        this.ChangeDamageInput = this.ChangeDamageInput.bind(this);
     }
 
     render() {
@@ -29,11 +33,19 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
         <div className="fullHeight">
             <header id="header">
                 <div id="headerContent" className="centered">
-                    <RoundCount Count={this.state.InitiativeTracker.RoundCount}/>
-                    <div>
-                        <button onClick={() => this.NextTurn()}>Next</button>
-                        <button onClick={() => this.AddObject()}>Add</button>
-                        <button onClick={() => this.DeleteObject()}>Delete</button>
+                <RoundCount Count={this.state.InitiativeTracker.RoundCount}/>
+                    <div className="row">
+                        <div className="col-12 col-sm-5">
+                            <input type="number" id="damageInput" onChange={this.ChangeDamageInput}></input>
+                            <button id="damageButton" onClick={() => this.ApplyDamage()}>Apply Damage</button>
+                        </div>
+                        <div className="col-12 align-self-end col-sm-7">
+                            <div className="row">
+                                <div className="col-4"><button onClick={() => this.NextTurn()}>Next Turn</button></div>
+                                <div className="col-4"><button onClick={() => this.AddObject()}>Add New</button></div>
+                                <div className="col-4"><button onClick={() => this.DeleteObject()}>Delete</button></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -46,6 +58,24 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
             </div>
         </div>
         );
+    }
+
+    ChangeDamageInput(e: any) {
+        e.preventDefault();
+        let inputValue: number = parseInt(e.target.value);
+        if (inputValue === undefined || Number.isNaN(inputValue)) {
+            this.DamageAmount = 0;
+            e.target.value = "";
+        }
+        else {
+            this.DamageAmount = inputValue
+        }
+    }
+
+    ApplyDamage() {
+        this.state.InitiativeTracker.ApplyDamage(this.DamageAmount);
+        this.setState({});
+        return;
     }
 
     AddObject() {
@@ -76,19 +106,19 @@ function Rogue (): PlayerCharacterModel {
 };
 
 function Dragon (): CombatParticipantGroupModel {
-	var dragon = new CombatParticipantModel(22,167,124);
+	var dragon = new CombatParticipantModel(17, "Dragon", 22,167,124, "Breath Weapon Charged");
 	return new CombatParticipantGroupModel(17,"Dragon","Breath Weapon Charged",dragon);
 };
 
 function Lair (): InitiativeObjectModel {
-	var lair = new InitiativeObjectModel(20,"Lair Action");
+	var lair = new NonParticipantModel(20,"Lair Action");
 	return lair;
 };
 
 function Kobolds (): CombatParticipantGroupModel {
-	var kobold = new CombatParticipantModel(12,6,6);
-	var kobold2 = new CombatParticipantModel(12,6,6);
-	var kobold3 = new CombatParticipantModel(12,6,0);
+	var kobold = new CombatParticipantModel(17,"kobold",12,6,6);
+	var kobold2 = new CombatParticipantModel(17,"kobold",12,6,6);
+	var kobold3 = new CombatParticipantModel(17,"kobold",12,6,0);
 	return new CombatParticipantGroupModel(17,"Kobold","",kobold,kobold2,kobold3);
 };
 //#endregion

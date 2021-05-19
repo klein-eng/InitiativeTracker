@@ -20,6 +20,15 @@ class CombatParticipantGroupModel extends InitiativeObjectModel {
 		}
 		return result;
 	}
+
+	ApplyDamage(damageAmount: number) {
+		for (let index: number = this.Group.length - 1; index >= 0; index--){
+			let participant: CombatParticipantModel = this.Group[index];
+            if(participant.IsSelected === true || true) { //TODO: add way to select group member
+				participant.ApplyDamage(damageAmount);
+			}
+		}
+	}
 }
 
 export default CombatParticipantGroupModel;
