@@ -38,6 +38,25 @@ input {
     max-width: 100%;
 }
 
+#newObjectContainer {
+    position: fixed;
+    max-width: 1000px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: rgb(5, 5, 5);
+    border: white solid 2px;
+    border-radius: .4rem;
+    padding: .5rem;
+}
+
+#nameInput,
+#notesInput {
+    width: 100%;
+    margin: .25rem 0rem;
+}
+
 #headerContent {
     max-width: 1100px;
 }
@@ -56,8 +75,12 @@ input {
     }
 }
 
-#damageInput {
+.numberInput {
     max-width: 4rem;
+    margin: .25rem 0rem;
+}
+
+#damageInput {
     margin-left: .5rem;
     margin-right: .5rem;
 }
@@ -80,8 +103,8 @@ input {
 .HpBarCur {
     height: .4rem;
     background-color: red;
-    position: absolute;
-    top: .3rem;
+    position: relative;
+    top: .1rem;
     margin: 0rem .1rem;
     border-radius: .3rem;
 }
@@ -104,12 +127,16 @@ input {
     border-style: solid;
     border-width: .1rem;
     border-radius: .5rem;
-    margin-bottom: .5rem;
+    border-color: grey;
+    margin-bottom: .25rem;
+    margin-top: .25rem;
     background-color: black;
 }
 
-.activeObject {
-    border: red solid .2rem;
+.activeObject.initObject {
+    border: white double .3rem;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
 }
 
 .objectSelect {

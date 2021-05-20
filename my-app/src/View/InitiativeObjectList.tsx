@@ -21,7 +21,7 @@ class InitiativeObjectList extends React.Component<InitiativeObjectListProps> {
 				key = {initiativeObject.getKey()} 
 				ObjectData = {initiativeObject}
 				Reorder = {this.Reorder}
-				IsActive = {index === this.props.InitiativeTracker.ActiveObjectIndex}
+				IsActive = {index === this.props.InitiativeTracker.CurrentTurnIndex}
 			/>
 		);
 	}

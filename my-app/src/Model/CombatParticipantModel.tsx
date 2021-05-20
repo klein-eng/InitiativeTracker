@@ -5,11 +5,16 @@ class CombatParticipantModel extends InitiativeObjectModel{
 	MaxHP: number;
 	CurHP: number;
 	
-	constructor(initiative: number, name: string, AC: number, maxHP: number, curHP: number, note?: string) {
+	constructor(initiative: number, name: string, AC: number, maxHP: number, curHP?: number, note?: string) {
 		super(initiative, name, note);
 		this.AC = AC;
 		this.MaxHP = maxHP;
-		this.CurHP = curHP;
+		if (curHP) {
+			this.CurHP = curHP;
+		}
+		else {
+			this.CurHP = this.MaxHP;
+		}
 		
 		return this;
 	};
@@ -23,7 +28,7 @@ class CombatParticipantModel extends InitiativeObjectModel{
 			this.CurHP = 0;
 		}
 		else {
-			this.CurHP = this.CurHP - damageAmount;
+			this.CurHP = this.CurHP - damageAmount
 		}
 	}
 }

@@ -7,42 +7,50 @@ import NonParticipantModel from '../Model/NonParticipantModel';
 import PlayerCharacterModel from '../Model/PlayerCharacterModel';
 import InitiativeObjectList from '../View/InitiativeObjectList';
 import RoundCount from '../View/RoundCount';
+import NewObjectForm from '../View/NewObjectForm'
 
 interface ControllerProps{}
 interface ControllerState
 {
     InitiativeTracker: InitiativeTrackerModel;
+    ShowNewObjectForm: boolean;
 }
 
 class InitiativeTableController extends React.Component<ControllerProps, ControllerState>{
-    ActiveObjectIndex: number;
     DamageAmount: number = 0;
     
     constructor(props: any) {
         super(props);
         var tracker = new InitiativeTrackerModel();
         tracker.SetParticipantsList(Participants());
-        this.state = {InitiativeTracker: tracker};
-        this.ActiveObjectIndex = 1;
+        this.state = {InitiativeTracker: tracker, ShowNewObjectForm: false};
         this.ApplyDamage = this.ApplyDamage.bind(this);
         this.ChangeDamageInput = this.ChangeDamageInput.bind(this);
+        this.ShowNewObjectForm = this.ShowNewObjectForm.bind(this);
+        this.HideNewObjectForm = this.HideNewObjectForm.bind(this);
     }
 
     render() {
         return(
-        <div className="fullHeight">
+        <div id="appRoot" className="fullHeight">
+            {this.state.ShowNewObjectForm ? 
+                <NewObjectForm
+                    HideForm={this.HideNewObjectForm}
+                    AddObjectToInitiative={this.state.InitiativeTracker.AddParticipant}
+                /> : null
+            }
             <header id="header">
                 <div id="headerContent" className="centered">
                 <RoundCount Count={this.state.InitiativeTracker.RoundCount}/>
                     <div className="row">
                         <div className="col-12 col-sm-5">
-                            <input type="number" id="damageInput" onChange={this.ChangeDamageInput}></input>
+                            <input type="number" id="damageInput" className="numberInput" onChange={this.ChangeDamageInput}></input>
                             <button id="damageButton" onClick={() => this.ApplyDamage()}>Apply Damage</button>
                         </div>
                         <div className="col-12 align-self-end col-sm-7">
                             <div className="row">
                                 <div className="col-4"><button onClick={() => this.NextTurn()}>Next Turn</button></div>
-                                <div className="col-4"><button onClick={() => this.AddObject()}>Add New</button></div>
+                                <div className="col-4"><button onClick={() => this.ShowNewObjectForm()}>Add New</button></div>
                                 <div className="col-4"><button onClick={() => this.DeleteObject()}>Delete</button></div>
                             </div>
                         </div>
@@ -75,24 +83,27 @@ class InitiativeTableController extends React.Component<ControllerProps, Control
     ApplyDamage() {
         this.state.InitiativeTracker.ApplyDamage(this.DamageAmount);
         this.setState({});
-        return;
     }
 
-    AddObject() {
-        this.setState({});
-        return;
+    ShowNewObjectForm() {
+        if (this.state.ShowNewObjectForm === false) {
+            this.setState({ShowNewObjectForm: true});
+        }
+    }
+    HideNewObjectForm() {
+        if (this.state.ShowNewObjectForm === true) {
+            this.setState({ShowNewObjectForm: false});
+        }
     }
 
     DeleteObject() {
         this.state.InitiativeTracker.DeleteSelectedParticipants();
         this.setState({});
-        return;
     }
 
     NextTurn() {
-        this.state.InitiativeTracker.NextTurn(); //TODO: Advance through participants list and only increment turn counter when needed
+        this.state.InitiativeTracker.NextTurn();
         this.setState({});
-        return;
     }
 }
 

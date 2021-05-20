@@ -18,7 +18,7 @@ function HpBar(props: any) {
 }
 
 const Filler = (props: any) => {
-	return <div className="HpBarCur" style={{width: `${props.percentage}%` }} />
+	return <div className="HpBarCur" style={{width: `calc(${props.percentage}% - .2rem)` }} />
 }
 
 function getHpPercentage(ObjectData: any): number {

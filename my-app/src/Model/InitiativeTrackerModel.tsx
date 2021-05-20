@@ -3,23 +3,30 @@ import CombatParticipantModel from "./InitiativeObjectModel";
 
 class InitiativeTrackerModel {
     RoundCount: number;
-    ActiveObjectIndex: number;
+    CurrentTurnIndex: number;
     private Participants: InitiativeObjectModel[]
 
     constructor() {
         this.RoundCount = 1;
-        this.ActiveObjectIndex = 0;
+        this.CurrentTurnIndex = 0;
         this.Participants = [];
+        this.AddParticipant = this.AddParticipant.bind(this)
     }
 
     NextTurn() {
-        if((this.ActiveObjectIndex + 1) >= this.Participants.length) {
+        if((this.CurrentTurnIndex + 1) >= this.Participants.length) {
             this.RoundCount++;
-            this.ActiveObjectIndex=0;
+            this.CurrentTurnIndex=0;
         }
         else {
-            this.ActiveObjectIndex++;
+            this.CurrentTurnIndex++;
         }
+    }
+
+    AddParticipant(participant: InitiativeObjectModel) {
+        console.log(this);
+        this.Participants.push(participant);
+        this.SortParticipantList();
     }
 
     SortParticipantList() {
